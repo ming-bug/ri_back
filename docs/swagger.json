@@ -1,0 +1,241 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Query about summary report of campaign.",
+        "title": "ri 后台查询",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Shimix",
+            "email": "Shiming.Xue@hgc.com.hk"
+        },
+        "license": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8002",
+    "paths": {
+        "/api/campaign/myCampaigns": {
+            "get": {
+                "description": "Get campaign info by email, current page and page size",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "campaign"
+                ],
+                "summary": "Get user basic campaign info",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user identify",
+                        "name": "userUin",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "list current page",
+                        "name": "current",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "list page size",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/current": {
+            "get": {
+                "description": "get current user info, include name \u0026 groups",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "get current user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/groups": {
+            "get": {
+                "description": "Get all system groups",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "System groups",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/login": {
+            "post": {
+                "description": "verify login account by email, password and group",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "login with login info",
+                "parameters": [
+                    {
+                        "description": "user login info",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.LoginInfo"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/user/outLogin": {
+            "post": {
+                "description": "logout and return nil",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "logout current account",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.ResultCont"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "model.LoginInfo": {
+            "type": "object",
+            "properties": {
+                "autoLogin": {
+                    "type": "boolean",
+                    "example": true
+                },
+                "email": {
+                    "type": "string",
+                    "example": "abc@abc.com"
+                },
+                "groupUin": {
+                    "type": "string",
+                    "example": "2"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "p@ssword1"
+                }
+            }
+        },
+        "model.ResultCont": {
+            "type": "object",
+            "properties": {
+                "data": {},
+                "errorCode": {
+                    "type": "string",
+                    "example": "200"
+                },
+                "errorMessage": {
+                    "type": "string"
+                },
+                "showType": {
+                    "description": "error display type： 0 silent; 1 message.warn; 2 message.error; 4 notification; 9 page",
+                    "type": "integer",
+                    "example": 0
+                },
+                "success": {
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        }
+    }
+}

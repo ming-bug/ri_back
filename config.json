@@ -1,0 +1,22 @@
+{
+  "app_name": "Ri",
+  "app_model": "debug",
+  "app_host": "127.0.0.1",
+  "app_port": "8002",
+  "database": {
+    "driver": "oci8",
+    "user": "*******",
+    "password": "**********",
+    "host": "***.***.**.***",
+    "port": "15306",
+    "service_name": "RIDBP",
+    "charset": "utf8",
+    "show_sql": false
+  },
+  "redis_config": {
+    "addr": "127.0.0.1",
+    "port": "6379",
+    "password": "password",
+    "db": 0
+  }
+}

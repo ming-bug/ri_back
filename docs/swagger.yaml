@@ -1,0 +1,163 @@
+definitions:
+  model.LoginInfo:
+    properties:
+      autoLogin:
+        example: true
+        type: boolean
+      email:
+        example: abc@abc.com
+        type: string
+      groupUin:
+        example: "2"
+        type: string
+      password:
+        example: p@ssword1
+        type: string
+    type: object
+  model.ResultCont:
+    properties:
+      data: {}
+      errorCode:
+        example: "200"
+        type: string
+      errorMessage:
+        type: string
+      showType:
+        description: error display type： 0 silent; 1 message.warn; 2 message.error;
+          4 notification; 9 page
+        example: 0
+        type: integer
+      success:
+        example: true
+        type: boolean
+    type: object
+host: localhost:8002
+info:
+  contact:
+    email: Shiming.Xue@hgc.com.hk
+    name: Shimix
+  description: Query about summary report of campaign.
+  license: {}
+  termsOfService: http://swagger.io/terms/
+  title: ri 后台查询
+  version: "1.0"
+paths:
+  /api/campaign/myCampaigns:
+    get:
+      consumes:
+      - application/json
+      description: Get campaign info by email, current page and page size
+      parameters:
+      - description: user identify
+        in: query
+        name: userUin
+        required: true
+        type: string
+      - description: list current page
+        in: query
+        name: current
+        required: true
+        type: integer
+      - description: list page size
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+      summary: Get user basic campaign info
+      tags:
+      - campaign
+  /api/user/current:
+    get:
+      description: get current user info, include name & groups
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+      summary: get current user
+      tags:
+      - user
+  /api/user/groups:
+    get:
+      description: Get all system groups
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+      summary: System groups
+      tags:
+      - user
+  /api/user/login:
+    post:
+      consumes:
+      - application/json
+      description: verify login account by email, password and group
+      parameters:
+      - description: user login info
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/model.LoginInfo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+      summary: login with login info
+      tags:
+      - user
+  /api/user/outLogin:
+    post:
+      consumes:
+      - application/json
+      description: logout and return nil
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResultCont'
+      summary: logout current account
+      tags:
+      - user
+swagger: "2.0"
